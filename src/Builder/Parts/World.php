@@ -15,6 +15,4 @@ abstract class World
     {
         return $this->data[$key];
     }
-
-
 }

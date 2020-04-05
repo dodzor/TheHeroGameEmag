@@ -8,5 +8,5 @@ class Beast extends CharacterAbstract
     {
         $this->attack = rand(25, 40)/100;
     }
-
 }
+

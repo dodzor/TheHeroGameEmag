@@ -4,14 +4,14 @@ namespace TheHeroGame\Builder;
 
 use TheHeroGame\Builder\Parts\Emagia;
 use TheHeroGame\Character\Orderus;
+use TheHeroGame\Character\Beast;
 use TheHeroGame\Factory\BeastFactory;
 use TheHeroGame\Factory\OrderusFactory;
+use TheHeroGame\Logger\Logger;
 
 class EmagiaBuilder implements WorldBuilderInterface
 {
     private $world;
-    private $orderus;
-    private $beast;
 
     private CONST ORDERUS = 'Orderus';
     private CONST BEAST = 'Beast';
@@ -28,7 +28,43 @@ class EmagiaBuilder implements WorldBuilderInterface
 
     public function initializeWorld()
     {
-        // TODO: Implement initializeWorld() method.
+        $orderus = $this->getOrderus();
+        $beast = $this->getBeast();
+
+        $logger = $this->getLogger();
+
+        $logger->log("\n".'Initializing new game..'."\n"."\n");
+        $logger->log('Our mighty hero Orderus is walking in the ever-green forests of Emagia,'."\n");
+        $logger->log('When out of the darkness a wild beast appears.'."\n");
+        $logger->log('An epic fight commences.'."\n"."\n");
+
+        $logger->log('Orderus stats are:'."\n");
+        $logger->log('Health: '. $orderus->getHealth()."\n");
+        $logger->log('Strength: '. $orderus->getStrength()."\n");
+        $logger->log('Defense: '. $orderus->getDefense()."\n");
+        $logger->log('Speed:' .$orderus->getSpeed()."\n");
+        $logger->log('Luck:' .$orderus->getLuck()."\n"."\n");
+
+        $logger->log('The beast stats are:'. "\n");
+        $logger->log('Health: '. $beast->getHealth()."\n");
+        $logger->log('Strength: '. $beast->getStrength()."\n");
+        $logger->log('Defense: '. $beast->getDefense()."\n");
+        $logger->log('Speed:' .$beast->getSpeed()."\n");
+        $logger->log('Luck:' .$beast->getLuck()."\n"."\n");
+
+        $this->startGame();
+    }
+
+    public function startGame()
+    {
+        $logger = $this->getLogger();
+
+        $this->gameOver();
+    }
+
+    public function gameOver()
+    {
+
     }
 
     public function addCharacters()
@@ -39,14 +75,12 @@ class EmagiaBuilder implements WorldBuilderInterface
 
     private function addOrderus()
     {
-        $this->createOrderus();
-        $this->world->setPart(self::ORDERUS, $this->orderus);
+        $this->world->setPart(self::ORDERUS, $this->createOrderus());
     }
 
     private function addBeast()
     {
-        $this->createBeast();
-        $this->world->setPart(self::BEAST, $this->beast);
+        $this->world->setPart(self::BEAST, $this->createBeast());
     }
 
     private function createOrderus()
@@ -58,7 +92,7 @@ class EmagiaBuilder implements WorldBuilderInterface
                         'luck'     => rand(10, 30)/100);
 
         $orderusFactory = new OrderusFactory();
-        $this->orderus = $orderusFactory->create($oStats);
+        return $orderusFactory->create($oStats);
     }
 
     private function createBeast()
@@ -70,7 +104,22 @@ class EmagiaBuilder implements WorldBuilderInterface
                         'luck'     => rand(25, 40)/100);
 
         $beastFactory = new BeastFactory();
-        $this->beast = $beastFactory->create($bStats);
+        return $beastFactory->create($bStats);
+    }
+
+    public function getOrderus(): Orderus
+    {
+        return $this->world->getPart(self::ORDERUS);
+    }
+
+    public function getBeast(): Beast
+    {
+        return $this->world->getPart(self::BEAST);
+    }
+
+    public function getLogger(): Logger
+    {
+        return Logger::getInstance();
     }
 
 }
