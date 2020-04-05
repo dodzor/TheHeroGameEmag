@@ -2,6 +2,8 @@
 
 namespace TheHeroGame\Character;
 
+use TheHeroGame\Character\Actions\ActionInterface;
+
 abstract class CharacterAbstract
 {
     protected $attack;
@@ -12,6 +14,19 @@ abstract class CharacterAbstract
     private $damage;
     private $speed;
     private $luck;
+
+    private $command;
+
+    public function setAction(ActionInterface $cmd)
+    {
+        $this->command = $cmd;
+        return $this;
+    }
+
+    public function run()
+    {
+        $this->command->execute($this);
+    }
 
     abstract public function setAttack();
 

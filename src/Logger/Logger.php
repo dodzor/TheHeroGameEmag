@@ -18,12 +18,12 @@ final class Logger
 
     public function log($message)
     {
-        $this->log[] = $message;
+        $this->logs[] = $message;
     }
 
     public function printLogs()
     {
-        foreach($this->logs as $message) print($message);
+        foreach($this->logs as $message) print_r($message);
     }
 
     /** its not allowed to call from outside */
